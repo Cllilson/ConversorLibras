@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tradutor para LIBRAS</title>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #e9f2f9;
+        }
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+        h1 {
+            color: #004d80;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #a6c4e0;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        #output {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #f0f8ff;
+            border: 1px dashed #a6c4e0;
+            border-radius: 8px;
+            min-height: 50px;
+            font-size: 22px;
+            color: #333;
+            word-wrap: break-word;
+        }
+        .aviso {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tradutor para LIBRAS</h1>
+        <input type="text" id="texto" placeholder="Digite sua frase aqui">
+        <button id="traduzirBtn">Traduzir</button>
+        <p class="aviso">Clique no ícone do VLibras (canto inferior direito) para ver os sinais.</p>
+        <!-- Texto visível que o VLibras vai ler -->
+        <div id="output">O texto traduzido aparecerá aqui.</div>
+    </div>
+
+    <!-- VLibras -->
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+
+        const inputTexto = document.getElementById('texto');
+        const traduzirBtn = document.getElementById('traduzirBtn');
+        const outputDiv = document.getElementById('output');
+
+        const traduzirTexto = () => {
+            const texto = inputTexto.value.trim();
+
+            // Reseta o conteúdo para forçar o VLibras a reiniciar
+            outputDiv.textContent = ""; 
+
+            // Aguarda um pequeno tempo antes de colocar o novo texto
+            setTimeout(() => {
+                outputDiv.textContent = texto || "Digite algum texto para traduzir.";
+            }, 100); // 100ms é suficiente
+        };
+
+        traduzirBtn.addEventListener('click', traduzirTexto);
+
+        inputTexto.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                traduzirTexto();
+            }
+        });
+    });
+</script>
+</body>
+</html>
